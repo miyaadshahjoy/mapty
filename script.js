@@ -201,3 +201,218 @@ DATA CAR 1: 'Ford' going at 120 km/h
 
 GOOD LUCK 😀
 */
+/*
+const CarCl = class {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed; // in km/h
+  }
+  accelerate() {
+    this.speed += 10;
+  }
+  brake() {
+    this.speed -= 5;
+  }
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+};
+
+const car1 = new CarCl('Ford', 120);
+console.log(car1);
+console.log(car1.speedUS); // 75
+car1.accelerate(); // 130
+car1.accelerate(); // 140
+car1.brake(); // 135
+car1.speedUS = 50; // 80
+console.log(car1);
+
+// Inheritance Between "Classes": Constructor Functions
+/*
+const Person = function (name, birthYear) {
+  this.name = name;
+  this.birthYear = birthYear;
+};
+Person.prototype.calcAge = function () {
+  console.log(2037 - this.birthYear);
+};
+const Student = function (name, birthYear, course) {
+  Person.call(this, name, birthYear);
+  this.course = course;
+};
+
+Student.prototype = Object.create(Person.prototype);
+
+const miyaad = new Student('Miyaad Joy', 1998, 'Biology');
+Student.prototype.constructor = Student;
+console.log(miyaad);
+console.dir(Student.prototype.constructor);
+miyaad.calcAge();
+
+console.log(miyaad instanceof Person);
+console.log(miyaad instanceof Student);
+*/
+
+// Coding Challenge #3
+
+/* 
+1. Use a constructor function to implement an Electric Car (called EV) as a CHILD "class" of Car. Besides a make and current speed, the EV also has the current battery charge in % ('charge' property);
+2. Implement a 'chargeBattery' method which takes an argument 'chargeTo' and sets the battery charge to 'chargeTo';
+3. Implement an 'accelerate' method that will increase the car's speed by 20, and decrease the charge by 1%. Then log a message like this: 'Tesla going at 140 km/h, with a charge of 22%';
+4. Create an electric car object and experiment with calling 'accelerate', 'brake' and 'chargeBattery' (charge to 90%). Notice what happens when you 'accelerate'! HINT: Review the definiton of polymorphism 😉
+
+DATA CAR 1: 'Tesla' going at 120 km/h, with a charge of 23%
+
+GOOD LUCK 😀
+*/
+/*
+// Parent Class
+
+const Car = function (make, speed) {
+  this.make = make;
+  this.speed = speed;
+};
+Car.prototype.accelerate = function () {
+  this.speed += 10;
+};
+Car.prototype.brake = function () {
+  this.speed -= 5;
+};
+// Child class
+
+const EV = function (make, speed, charge) {
+  Car.call(this, make, speed);
+  this.charge = charge;
+};
+// Linking prototype
+EV.prototype = Object.create(Car.prototype);
+
+EV.prototype.chargeBattery = function (chargeTo) {
+  this.charge = chargeTo;
+};
+
+EV.prototype.accelerate = function () {
+  this.speed += 20;
+  this.charge -= 1;
+  console.log(
+    `Tesla going at ${this.speed} km/h, with a charge of ${this.charge}%`
+  );
+};
+
+const tesla = new EV('Tesla', 120, 23);
+console.log(tesla);
+tesla.chargeBattery(90);
+tesla.accelerate();
+tesla.brake();
+console.log(tesla);
+*/
+
+// Inheritance Between "Classes": ES6 Classes
+/*
+const PersonCl = class {
+  constructor(name, birthYear) {
+    this.name = name;
+    this.birthYear = birthYear;
+  }
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  }
+};
+const StudentCl = class extends PersonCl {
+  constructor(name, birthYear, course) {
+    super(name, birthYear);
+    this.course = course;
+  }
+};
+
+const sakiba = new StudentCl('Noushin Sakiba', 2000, 'Biology');
+console.log(sakiba);
+sakiba.calcAge();
+*/
+
+// Inheritance Between "Classes": Object.create
+/*
+const PersonProto = {
+  init(name, birthYear) {
+    this.name = name;
+    this.birthYear = birthYear;
+  },
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  },
+};
+
+const StudentProto = Object.create(PersonProto);
+StudentProto.init = function (name, birthYear, course) {
+  PersonProto.init.call(this, name, birthYear);
+  this.course = course;
+};
+
+const sakiba = Object.create(StudentProto);
+console.log(sakiba);
+sakiba.init('Noushin Sakiba', 2000, 'Biology');
+sakiba.calcAge();
+console.log(sakiba);
+*/
+
+/* 
+1. Re-create challenge #3, but this time using ES6 classes: create an 'EVCl' child class of the 'CarCl' class
+2. Make the 'charge' property private;
+3. Implement the ability to chain the 'accelerate' and 'chargeBattery' methods of this class, and also update the 'brake' method in the 'CarCl' class. Then experiment with chaining!
+
+DATA CAR 1: 'Rivian' going at 120 km/h, with a charge of 23%
+
+GOOD LUCK 😀
+*/
+/*
+class CarCl {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+  }
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+    return this;
+  }
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+
+class EVCl extends CarCl {
+  #charge;
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+  chargeBattery(chargeTo) {
+    this.#charge = chargeTo;
+    return this;
+  }
+  accelerate() {
+    this.speed += 20;
+    this.#charge -= 1;
+    console.log(
+      `Rivian going at ${this.speed} km/h, with a charge of ${this.#charge}%`
+    );
+    return this;
+  }
+}
+
+const rivian = new EVCl('Rivian', 120, 23);
+console.log(rivian);
+rivian.accelerate().accelerate().chargeBattery(90).brake().accelerate().brake();
+console.log(rivian);
+*/
