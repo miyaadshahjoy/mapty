@@ -1,5 +1,4 @@
 'use strict';
-
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -10,33 +9,6 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
-const mapContainer = document.querySelector('#map');
-
-// Geolocation API
-navigator.geolocation.getCurrentPosition(
-  function (GeolocationPosition) {
-    const { latitude, longitude } = GeolocationPosition.coords; // Destructuring coords object
-    console.log(latitude, longitude);
-    const map = L.map('map').setView([latitude, longitude], 13);
-    L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
-      foo: 'bar',
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
-    console.log(map);
-    map.addEventListener('click', function (e) {
-      console.log(e);
-      console.log(e.latlng);
-      // const marker = L.marker(e.latlng).addTo(map);
-      // console.log(marker);
-      const popupContent = 'Cycling workout';
-      L.marker(e.latlng).addTo(map).bindPopup(popupContent).openPopup();
-    });
-  },
-  function (error) {
-    console.log(error);
-  }
-);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Exercises :
